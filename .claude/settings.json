@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vite *)",
+      "Bash(Compress-Archive -Path dist\\\\* -DestinationPath dist.zip -Force)"
+    ]
+  }
+}

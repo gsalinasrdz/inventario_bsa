@@ -1,0 +1,21 @@
+Options -MultiViews -Indexes
+RewriteEngine On
+
+# Forzar HTTPS en producción
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Authorization header para Sanctum
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Si el archivo/directorio existe → servirlo directamente (assets React)
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Rutas API y Sanctum → Laravel (index.php)
+RewriteRule ^(api|sanctum)(/.*)?$ index.php [L]
+
+# Todo lo demás → React SPA (index.html)
+RewriteRule ^ index.html [L]
